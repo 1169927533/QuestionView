@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="13dp">
+
+    <ImageView
+        android:id="@+id/iv_touch_question_image"
+        android:layout_width="155dp"
+        android:layout_height="115dp"
+        android:background="@mipmap/ic_launcher"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tv_touch_question_answer"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:gravity="center_horizontal|top"
+        android:text="age"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_touch_question_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/question_result_text"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:drawableBottom="@drawable/live_common_spell_divide" />
+
+</LinearLayout>
