@@ -5,15 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.haipingguo.questionview.R;
 import com.example.haipingguo.questionview.utils.ScreenUtil;
@@ -95,11 +92,16 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     private void initOptionList(List<String> optionList) {
         mOptionLlyt.removeAllViews();
         for (int i = 0; i < optionList.size(); i++) {
-            View view = View.inflate(mContext, R.layout.touch_option_item_view, null);
-            TouchMoveView touchMoveView=  view.findViewById(R.id.touch_option_item_view);
+            TouchMoveView touchMoveView= new TouchMoveView(mContext);
+            touchMoveView.setParentLayout(this);
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.leftMargin=ScreenUtil.px2dp(mContext,20);
+            layoutParams.rightMargin=ScreenUtil.px2dp(mContext,20);
+            touchMoveView.setLayoutParams(layoutParams);
+            getOptionView(touchMoveView,i);
             touchMoveView.setIndex(i);
-            touchMoveView.setUserFrom(this);
-            mOptionLlyt.addView(view);
+            mOptionLlyt.addView(touchMoveView);
             touchMoveViewList.add(touchMoveView);
         }
     }
@@ -151,9 +153,14 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
         /*Rect rect = new Rect(modulePosition.leftTop.x, modulePosition.leftTop.y,
                 modulePosition.rightBottom.x, modulePosition.rightBottom.y);*/
         canvas.drawPoint(modulePosition.centerPosition.x,modulePosition.centerPosition.y,paint);
-        Log.i("ghppp", "onDraw");
-        Log.i("ghppp", "onDraw");
        /* canvas.drawPoint(ints[0],ints[1],paint);*/
         /*canvas.drawRect(rect,paint);*/
+    }
+
+    public void getOptionView(AppCompatTextView textView,int index) {
+        textView.setBackgroundResource(R.drawable.live_common_touch_view_background);
+        textView.setPadding(ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 7),
+                ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 10));
+        textView.setText(String.valueOf(index+1));
     }
 }

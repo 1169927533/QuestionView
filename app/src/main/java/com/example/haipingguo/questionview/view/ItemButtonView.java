@@ -15,12 +15,15 @@ import com.example.haipingguo.questionview.view.bean.Position;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETX;
+import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
+
 public class ItemButtonView extends android.support.v7.widget.AppCompatTextView {
     //答案的位置范围数组
     public List<ModulePosition> resultPositionList = new ArrayList<>();
     public OnChangeEventListener listener;
-    private float rawX;
-    private float rawY;
+    private float downX;
+    private float downY;
 
     public ItemButtonView(Context context) {
         this(context, null);
@@ -59,7 +62,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     //已处理偏移问题,待处理动画
-    public void moveTo(final Position toPosition) {
+    public void moveTo(Position toPosition) {
         setX(toPosition.x);
         setY(toPosition.y);
     }
@@ -68,20 +71,21 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                rawX = event.getRawX();
-                rawY = event.getRawY();
+                downX = event.getRawX();
+                downY = event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float moveX = event.getRawX() - rawX;
-                float moveY = event.getRawY() - rawY;
+                float moveX = event.getRawX() - downX;
+                float moveY = event.getRawY() - downY;
                 if (Math.abs(moveY) > 20 || Math.abs(moveX) > 20) {
-                    setX(event.getRawX() - (getWidth() / 2));
-                    setY(event.getRawY() - (getHeight()));
+                    setX(event.getRawX()  - YOFFSETX-getWidth()/2);
+                    setY(event.getRawY()  - YOFFSETY-getHeight()/2);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 float x = event.getRawX();
                 float y = event.getRawY();
+
                 ModulePosition check = check(x, y);
               /*  if(check!=null){
                     moveToOther(check);
@@ -131,9 +135,9 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 }
             }
         }
-
         return null;
     }
+
     interface OnChangeEventListener {
         void moveToFailed(ModulePosition currentPosition, ItemButtonView itemButtonView);
 

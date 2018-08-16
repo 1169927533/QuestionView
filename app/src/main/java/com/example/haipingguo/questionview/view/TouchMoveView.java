@@ -3,16 +3,9 @@ package com.example.haipingguo.questionview.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.example.haipingguo.questionview.R;
-import com.example.haipingguo.questionview.utils.ScreenUtil;
 import com.example.haipingguo.questionview.view.bean.ModulePosition;
 import com.example.haipingguo.questionview.view.bean.Position;
 
@@ -29,7 +22,6 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     private float downY;
     private ItemButtonView itemView;
     private TouchMoveLayout touchMoveLayout;
-    private LinearLayout mOptionLlyt;
     private List<ModulePosition> mCenterList = new ArrayList<>();
     private int index;
 
@@ -53,21 +45,6 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
 
     public void setParentLayout(TouchMoveLayout parentLayout) {
         this.touchMoveLayout = parentLayout;
-        mOptionLlyt = touchMoveLayout.findViewById(R.id.touch_option_llyt);
-    }
-
-    public void setUserFrom(final TouchMoveLayout touchMoveLayout) {
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                setBackgroundResource(R.drawable.live_common_touch_view_background);
-                setTextColor(getResources().getColor(R.color.live_common_gray_1));
-                setPadding(ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 7),
-                        ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 10));
-                setParentLayout(touchMoveLayout);
-            }
-        });
     }
 
     public void setIndex(int aindex) {
@@ -80,19 +57,23 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_DOWN:
                 downX = event.getRawX();
                 downY = event.getRawY();
+                if(itemView==null){
+                    itemView = getItemButtonView();
+                    itemView.initLayout(mContext);
+                    int[] ints=new int[2];
+                    getLocationOnScreen(ints);
+                    itemView.moveTo(new Position(ints[0]-YOFFSETX,ints[1]-YOFFSETY));
+                    touchMoveLayout.addView(itemView);
+                    setVisibility(INVISIBLE);
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
-                //todo
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(event.getRawY() - downY) > 20 || Math.abs(event.getRawX() - downX) > 20) {
-                    setX(event.getRawX() - (getWidth() / 2) - YOFFSETX);
-                    setY(event.getRawY() - (getHeight() + YOFFSETY));
-                    ViewGroup parent = (ViewGroup) getParent();
-                    if (parent != null&&parent instanceof LinearLayout) {
-                        parent.removeAllViews();
-                        touchMoveLayout.addView(this);
-                    }
+                if (Math.abs(moveY - downY) > 20 || Math.abs(moveX - downX) > 20) {
+                    float x=event.getRawX() - YOFFSETX-getWidth()/2;
+                    float y=event.getRawY() - YOFFSETY-getHeight()/2;
+                    itemView.moveTo(new Position(x,y));
                 }
                 downX = moveX;
                 downY = moveY;
@@ -166,5 +147,11 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     @Override
     public void moveToOther(ItemButtonView itemButtonView, ModulePosition check) {
 
+    }
+
+    public ItemButtonView getItemButtonView() {
+        ItemButtonView  itemButtonView=new ItemButtonView(mContext);
+        touchMoveLayout.getOptionView(itemButtonView,index);
+        return itemButtonView;
     }
 }
