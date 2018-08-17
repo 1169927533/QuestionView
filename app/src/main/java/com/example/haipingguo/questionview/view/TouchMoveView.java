@@ -62,6 +62,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                     itemView.initLayout(mContext);
                     int[] ints=new int[2];
                     getLocationOnScreen(ints);
+                    itemView.setResultPositionList(mCenterList);
                     itemView.moveTo(new Position(ints[0]-YOFFSETX,ints[1]-YOFFSETY));
                     touchMoveLayout.addView(itemView);
                     setVisibility(INVISIBLE);
@@ -82,12 +83,11 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                 float x = event.getRawX();
                 float y = event.getRawY();
                 ModulePosition check = check(x, y);
-               /* if (check != null) {
+                if (check != null) {
                     moveToOther(check);
-                    // listener.moveToOther(this, check);
                 } else {
 
-                }*/
+                }
                 break;
         }
         return true;

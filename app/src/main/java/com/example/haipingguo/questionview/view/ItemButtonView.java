@@ -83,16 +83,15 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                float x = event.getRawX();
-                float y = event.getRawY();
-
+                float x = event.getRawX()- YOFFSETX;
+                float y = event.getRawY() - YOFFSETY;
                 ModulePosition check = check(x, y);
-              /*  if(check!=null){
+                if(check!=null){
                     moveToOther(check);
-                   // listener.moveToOther(this, check);
+                    //listener.moveToOther(this, check);
                 }else{
 
-                }*/
+                }
                 break;
         }
         return true;
@@ -112,8 +111,8 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
             @Override
             public void onAnimationEnd(Animation animation) {
                 setClickable(true);
-                setX(position1.x);
-                setY(position1.y);
+                setX(position1.x-getWidth()/2);
+                setY(position1.y-getHeight()/2);
                 clearAnimation();
             }
 
@@ -126,7 +125,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     private ModulePosition check(float x, float y) {
-        ModulePosition position = null;
+        ModulePosition position ;
         for (int i = 0; i < resultPositionList.size(); i++) {
             position = resultPositionList.get(i);
             if (position != null) {
