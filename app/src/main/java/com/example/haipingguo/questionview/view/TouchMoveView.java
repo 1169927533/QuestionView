@@ -72,55 +72,24 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
                 if (Math.abs(moveX - downX) > 20 || Math.abs( moveY - downY) > 20) {
-                    itemView.setX(moveX  - YOFFSETX-getWidth()/2);
-                    itemView.setY(moveY  - YOFFSETY-getHeight()/2);
-                    //卡顿的原因
-                  //  itemView.moveTo(new Position(moveX  - YOFFSETX-getWidth()/2,moveY  - YOFFSETY-getHeight()/2));
+                    itemView.moveTo(new Position(moveX  - YOFFSETX-getWidth()/2,
+                            moveY  - YOFFSETY-getHeight()/2));
                 }
                 downX = moveX;
                 downY = moveY;
                 break;
             case MotionEvent.ACTION_UP:
-                float x = event.getRawX();
-                float y = event.getRawY();
+                float x = event.getRawX()- YOFFSETX;
+                float y = event.getRawY() - YOFFSETY;
                 ModulePosition check = check(x, y);
                 if (check != null) {
-                    moveToOther(check);
+                    itemView.moveToOther(check);
                 } else {
 
                 }
                 break;
         }
         return true;
-    }
-
-    public void moveToOther(ModulePosition modulePosition) {
-        final Position position1 = modulePosition.centerPosition;
-        TranslateAnimation animation = new TranslateAnimation(0, position1.x - getX(), 0, position1.y - getY());
-        animation.setFillBefore(false);
-        animation.setDuration(200);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                setClickable(true);
-
-
-                setX(position1.x);
-                setY(position1.y);
-                clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        startAnimation(animation);
     }
 
     private ModulePosition check(float x, float y) {

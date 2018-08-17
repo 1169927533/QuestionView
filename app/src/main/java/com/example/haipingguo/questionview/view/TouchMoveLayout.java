@@ -3,6 +3,7 @@ package com.example.haipingguo.questionview.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
@@ -150,11 +151,11 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         ModulePosition modulePosition = HotQuestionList.get(1);
-        /*Rect rect = new Rect(modulePosition.leftTop.x, modulePosition.leftTop.y,
-                modulePosition.rightBottom.x, modulePosition.rightBottom.y);*/
-        canvas.drawPoint(modulePosition.centerPosition.x,modulePosition.centerPosition.y,paint);
+        Rect rect = new Rect((int)modulePosition.leftTop.x, (int)modulePosition.leftTop.y,
+                (int)modulePosition.rightBottom.x, (int)modulePosition.rightBottom.y);
+
        /* canvas.drawPoint(ints[0],ints[1],paint);*/
-        /*canvas.drawRect(rect,paint);*/
+        canvas.drawRect(rect,paint);
     }
 
     public void getOptionView(AppCompatTextView textView,int index) {
