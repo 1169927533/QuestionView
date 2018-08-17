@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 
+import com.example.haipingguo.questionview.utils.AnimaUtils;
 import com.example.haipingguo.questionview.view.bean.ModulePosition;
 import com.example.haipingguo.questionview.view.bean.Position;
 
@@ -83,7 +85,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                 float y = event.getRawY() - YOFFSETY;
                 ModulePosition check = check(x, y);
                 if (check != null) {
-                    itemView.moveToOther(check);
+                    AnimaUtils.moveToOther(new Position(x,y),check,itemView);
                 } else {
 
                 }

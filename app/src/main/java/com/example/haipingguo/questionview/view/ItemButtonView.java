@@ -5,10 +5,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 
 import com.example.haipingguo.questionview.R;
+import com.example.haipingguo.questionview.utils.AnimaUtils;
 import com.example.haipingguo.questionview.utils.ScreenUtil;
 import com.example.haipingguo.questionview.view.bean.ModulePosition;
 import com.example.haipingguo.questionview.view.bean.Position;
@@ -91,7 +90,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 float y = event.getRawY() - YOFFSETY;
                 ModulePosition check = check(x, y);
                 if(check!=null){
-                    moveToOther(check);
+                    AnimaUtils.moveToOther(new Position(x-getWidth()/2,y-getHeight()/2),check,this);
                     //listener.moveToOther(this, check);
                 }else{
 
@@ -99,33 +98,6 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 break;
         }
         return true;
-    }
-
-    public void moveToOther(ModulePosition modulePosition){
-        final Position position1=modulePosition.centerPosition;
-        TranslateAnimation animation = new TranslateAnimation(0, position1.x - getX(), 0, position1.y - getY());
-        animation.setFillBefore(false);
-        animation.setDuration(200);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                setClickable(true);
-                setX(position1.x-getWidth()/2);
-                setY(position1.y-getHeight()/2);
-                clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        startAnimation(animation);
     }
 
     private ModulePosition check(float x, float y) {
