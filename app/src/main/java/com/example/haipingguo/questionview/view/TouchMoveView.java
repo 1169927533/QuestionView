@@ -71,10 +71,11 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(moveY - downY) > 20 || Math.abs(moveX - downX) > 20) {
-                    float x=event.getRawX() - YOFFSETX-getWidth()/2;
-                    float y=event.getRawY() - YOFFSETY-getHeight()/2;
-                    itemView.moveTo(new Position(x,y));
+                if (Math.abs(moveX - downX) > 20 || Math.abs( moveY - downY) > 20) {
+                    itemView.setX(moveX  - YOFFSETX-getWidth()/2);
+                    itemView.setY(moveY  - YOFFSETY-getHeight()/2);
+                    //卡顿的原因
+                  //  itemView.moveTo(new Position(moveX  - YOFFSETX-getWidth()/2,moveY  - YOFFSETY-getHeight()/2));
                 }
                 downX = moveX;
                 downY = moveY;

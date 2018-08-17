@@ -2,6 +2,7 @@ package com.example.haipingguo.questionview.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -65,6 +66,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     public void moveTo(Position toPosition) {
         setX(toPosition.x);
         setY(toPosition.y);
+        Log.i("ghppp","time 2=="+System.currentTimeMillis());
     }
 
     @Override
@@ -75,12 +77,14 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 downY = event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float moveX = event.getRawX() - downX;
-                float moveY = event.getRawY() - downY;
-                if (Math.abs(moveY) > 20 || Math.abs(moveX) > 20) {
-                    setX(event.getRawX()  - YOFFSETX-getWidth()/2);
-                    setY(event.getRawY()  - YOFFSETY-getHeight()/2);
+                float moveX = event.getRawX();
+                float moveY = event.getRawY();
+                if (Math.abs(moveX - downX) > 20 || Math.abs( moveY - downX) > 20) {
+                    setX(moveX  - YOFFSETX-getWidth()/2);
+                    setY(moveY  - YOFFSETY-getHeight()/2);
                 }
+                downX = moveX;
+                downY = moveY;
                 break;
             case MotionEvent.ACTION_UP:
                 float x = event.getRawX()- YOFFSETX;
