@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -19,9 +20,11 @@ import com.example.haipingguo.questionview.view.bean.ModulePosition;
 import com.example.haipingguo.questionview.view.bean.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.OnGlobalLayoutListener {
+public class TouchMoveLayout extends RelativeLayout  {
     private Context mContext;
     public static int YOFFSETY = 0;
     public static int YOFFSETX = 0;
@@ -30,8 +33,11 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     private Paint paint;
     //题目热区集合
     private List<ModulePosition> HotQuestionList = new ArrayList<>();
+    //选项位置集合
+    private List<ModulePosition> mOptionList = new ArrayList<>();
     //选项集合
     private List<TouchMoveView> touchMoveViewList = new ArrayList<>();
+    public static Map<Integer,ItemButtonView> resultMap=new HashMap<>();
 
     public TouchMoveLayout(Context context) {
         this(context, null);
@@ -86,7 +92,17 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
             mQuestionLlyt.addView(questionLayout);
         }
         //布局发生变化监听
-        mQuestionLlyt.getViewTreeObserver().addOnGlobalLayoutListener(this);
+        mQuestionLlyt.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                initQuestionHotList();
+            }
+        });
     }
 
     private void initOptionList(List<String> optionList) {
@@ -104,16 +120,33 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
             mOptionLlyt.addView(touchMoveView);
             touchMoveViewList.add(touchMoveView);
         }
+        mOptionLlyt.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                initOptionList();
+            }
+        });
     }
 
-    @Override
-    public void onGlobalLayout() {
-        if (Build.VERSION.SDK_INT < 16) {
-            getViewTreeObserver().removeGlobalOnLayoutListener(this);
-        } else {
-            getViewTreeObserver().removeOnGlobalLayoutListener(this);
+    private void initOptionList() {
+        for (int i = 0; i < mOptionLlyt.getChildCount(); i++) {
+            TouchMoveView optionItem = (TouchMoveView) mOptionLlyt.getChildAt(i);
+            int[] location = new int[2];
+            optionItem.getLocationOnScreen(location);
+            ModulePosition modulePosition=new ModulePosition();
+            modulePosition.setCenterPosition(new Position(location[0]-YOFFSETX+(optionItem.getWidth()/2),
+                    location[1]-YOFFSETY+(optionItem.getHeight()/2)));
+            mOptionList.add(modulePosition);
         }
-        initQuestionHotList();
+        for (int i = 0; i < mOptionLlyt.getChildCount(); i++) {
+            TouchMoveView optionItem = (TouchMoveView) mOptionLlyt.getChildAt(i);
+            optionItem.setOptionList(mOptionList);
+        }
     }
 
     /**
@@ -126,13 +159,12 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
             int[] questionLayoutLocation = new int[2];
             //以屏幕为原点questionItem的坐标
             questionItem.getLocationOnScreen(questionLayoutLocation);
-            ModulePosition  modulePosition = new ModulePosition(0 + 1,
+            ModulePosition  modulePosition = new ModulePosition(i,
                     new Position(questionLayoutLocation[0] , questionLayoutLocation[1]-YOFFSETY),
                     new Position(questionLayoutLocation[0] + questionItem.getWidth(),
                             questionLayoutLocation[1] + questionItem.getHeight()-YOFFSETY));
             int[] location = new int[2];
             resultText.getLocationOnScreen(location);
-            location[0] = Math.abs(location[0]) % ScreenUtil.getScreenWidth(mContext);
             int xPos = location[0];
             int yPos = location[1];
             int centerX = xPos + (resultText.getWidth() / 2)-YOFFSETX;
@@ -149,11 +181,12 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        ModulePosition modulePosition = HotQuestionList.get(1);
+        ModulePosition modulePosition = mOptionList.get(1);
        /* Rect rect = new Rect((int)modulePosition.leftTop.x, (int)modulePosition.leftTop.y,
                 (int)modulePosition.rightBottom.x, (int)modulePosition.rightBottom.y);
 
-       */ canvas.drawPoint(modulePosition.centerPosition.x,modulePosition.centerPosition.y,paint);/*
+       */
+       /*
         canvas.drawRect(rect,paint);*/
     }
 

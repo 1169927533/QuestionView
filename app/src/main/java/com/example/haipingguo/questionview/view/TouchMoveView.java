@@ -1,7 +1,9 @@
 package com.example.haipingguo.questionview.view;
 
 import android.content.Context;
+import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,7 +14,10 @@ import com.example.haipingguo.questionview.view.bean.ModulePosition;
 import com.example.haipingguo.questionview.view.bean.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETX;
 import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
@@ -26,6 +31,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     private TouchMoveLayout touchMoveLayout;
     private ModulePosition optionOrginLocation;
     private List<ModulePosition> mHotList = new ArrayList<>();
+    private List<ModulePosition> mOptionList = new ArrayList<>();
     private boolean isMove;
 
     private int index;
@@ -48,6 +54,11 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
         mHotList.addAll(centerList);
     }
 
+    public void setOptionList(List<ModulePosition> optionList) {
+        mOptionList.clear();
+        mOptionList.addAll(optionList);
+    }
+
     public void setParentLayout(TouchMoveLayout parentLayout) {
         this.touchMoveLayout = parentLayout;
     }
@@ -63,15 +74,16 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                 downX = event.getRawX();
                 downY = event.getRawY();
                 if (itemView == null) {
-                    itemView = getItemButtonView();
+                    itemView = getItemButtonView(index);
                     itemView.initLayout(mContext);
+                    itemView.setOnChangeEventListener(this);
                     int[] ints = new int[2];
                     getLocationOnScreen(ints);
                     itemView.setResultPositionList(mHotList);
                     optionOrginLocation = new ModulePosition();
-                    optionOrginLocation.setCenterPosition(new Position(ints[0]-YOFFSETX+getWidth()/2,ints[1]-YOFFSETY+getHeight()/2));
-                    optionOrginLocation.setLeftTop(new Position(ints[0]-YOFFSETX, ints[1]-YOFFSETY));
-                    optionOrginLocation.setRightBottom(new Position(ints[0]-YOFFSETX + getWidth(), ints[1]-YOFFSETY + getHeight()));
+                    optionOrginLocation.setCenterPosition(new Position(ints[0] - YOFFSETX + getWidth() / 2, ints[1] - YOFFSETY + getHeight() / 2));
+                    optionOrginLocation.setLeftTop(new Position(ints[0] - YOFFSETX, ints[1] - YOFFSETY));
+                    optionOrginLocation.setRightBottom(new Position(ints[0] - YOFFSETX + getWidth(), ints[1] - YOFFSETY + getHeight()));
                     itemView.setOptionOrginLocation(optionOrginLocation);
                     itemView.moveTo(optionOrginLocation);
                     touchMoveLayout.addView(itemView);
@@ -81,7 +93,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                isMove=Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20;
+                isMove = Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20;
                 if (isMove) {
                     itemView.setX(moveX - YOFFSETX - getWidth() / 2);
                     itemView.setY(moveY - YOFFSETY - getHeight() / 2);
@@ -95,9 +107,9 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                 }
                 ModulePosition check = check(x, y);
                 if (check != null) {
-                    AnimaUtils.moveToHotQuestion(new Position(x, y), check, itemView);
+                    moveToHotQueue(new Position(x, y), check);
                 } else {
-                    AnimaUtils.moveToHotQuestion(new Position(x , y), optionOrginLocation, itemView);
+                    moveToHotQueue(new Position(x, y), optionOrginLocation);
                 }
                 break;
         }
@@ -116,32 +128,57 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
         return null;
     }
 
-    @Override
-    public void moveToFailed(ModulePosition currentPosition, ItemButtonView itemButtonView) {
-
-    }
-
-    @Override
-    public void moveToInitial(ItemButtonView itemButtonView) {
-
-    }
-
-    @Override
-    public void moveToOther(ItemButtonView itemButtonView, ModulePosition check) {
-
-    }
-
-    public ItemButtonView getItemButtonView() {
+    public ItemButtonView getItemButtonView(int index) {
         ItemButtonView itemButtonView = new ItemButtonView(mContext);
+        itemButtonView.setIndex(index);
         touchMoveLayout.getOptionView(itemButtonView, index);
         return itemButtonView;
     }
 
-    public boolean isShowAnimat(float x, float y) {
-        if (x > optionOrginLocation.leftTop.x && x < optionOrginLocation.rightBottom.x
-                && y > optionOrginLocation.leftTop.y && y > optionOrginLocation.rightBottom.y) {
-            return true;
+    @Override
+    public void moveToInitial(Position startPosition, ModulePosition endPosition, ItemButtonView itemButtonView) {
+        AnimaUtils.moveToHotQuestion(new Position(startPosition.x, startPosition.y), endPosition, itemButtonView);
+        TouchMoveLayout.resultMap.remove(itemButtonView.index);
+    }
+
+    @Override
+    public void moveToHotQueue(Position startPosition, ModulePosition endPosition) {
+        if (TouchMoveLayout.resultMap.containsKey(endPosition.index)) {
+            ItemButtonView itemButtonView = TouchMoveLayout.resultMap.get(endPosition.index);
+            //一个在热区，一个不在
+            if (!TouchMoveLayout.resultMap.containsValue(itemView)) {
+                moveToInitial(mHotList.get(endPosition.index).centerPosition, mOptionList.get(itemButtonView.index), itemButtonView);
+                TouchMoveLayout.resultMap.remove(endPosition.index);
+                TouchMoveLayout.resultMap.put(endPosition.index, itemView);
+            } else {
+                //选项都在热区，互换
+                Map.Entry<Integer, ItemButtonView> entry1 = null;
+                for (Map.Entry<Integer, ItemButtonView> entry : TouchMoveLayout.resultMap.entrySet()) {
+                    if(itemView.equals(entry.getValue())){
+                        entry1=entry;
+                    }
+                }
+                ModulePosition modulePosition1 = mHotList.get(entry1.getKey());
+                AnimaUtils.moveToHotQuestion(endPosition.centerPosition,
+                        modulePosition1, itemButtonView);
+                TouchMoveLayout.resultMap.remove(endPosition.index);
+                TouchMoveLayout.resultMap.remove(modulePosition1.index);
+                TouchMoveLayout.resultMap.put(endPosition.index, itemView);
+                TouchMoveLayout.resultMap.put(modulePosition1.index, itemButtonView);
+            }
+        } else {
+            //已经在热区的位置，跳到另一个热区
+            if (TouchMoveLayout.resultMap.containsValue(itemView)) {
+                for (Map.Entry<Integer, ItemButtonView> entry : TouchMoveLayout.resultMap.entrySet()) {
+                    if(itemView.equals(entry.getValue())){
+                        TouchMoveLayout.resultMap.remove(entry.getKey());
+                    }
+                }
+            }
+            //从开始位置到热区
+            TouchMoveLayout.resultMap.put(endPosition.index, itemView);
         }
-        return false;
+        AnimaUtils.moveToHotQuestion(new Position(startPosition.x, startPosition.y),
+                endPosition, itemView);
     }
 }

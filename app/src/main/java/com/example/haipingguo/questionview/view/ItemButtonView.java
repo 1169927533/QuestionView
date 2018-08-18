@@ -21,8 +21,9 @@ import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
 public class ItemButtonView extends android.support.v7.widget.AppCompatTextView {
     public List<ModulePosition> resultPositionList = new ArrayList<>();
     private ModulePosition optionOrginLocation;
-    public OnChangeEventListener listener;
+    public OnChangeEventListener mOnChangeEventListener;
     private boolean isMove;
+    public int index;
     private float downX;
     private float downY;
 
@@ -38,12 +39,17 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
         super(context, attrs, defStyleAttr);
     }
 
+    public void setIndex(int aindex) {
+        this.index = aindex;
+    }
+
+
     public void setOptionOrginLocation(ModulePosition optionOrginLocation) {
         this.optionOrginLocation = optionOrginLocation;
     }
 
-    public void setOnChangeEvent(OnChangeEventListener listener) {
-        this.listener = listener;
+    public void setOnChangeEventListener(OnChangeEventListener listener) {
+        this.mOnChangeEventListener = listener;
     }
 
     public void setResultPositionList(List<ModulePosition> positionList) {
@@ -95,9 +101,9 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
                 }
                 ModulePosition check = check(x, y);
                 if (check != null) {
-                    AnimaUtils.moveToHotQuestion(new Position(x - getWidth() / 2, y - getHeight() / 2), check, this);
+                    mOnChangeEventListener.moveToHotQueue(new Position(x - getWidth() / 2, y - getHeight() / 2), check);
                 } else {
-                    AnimaUtils.moveToHotQuestion(new Position(x, y), optionOrginLocation, this);
+                    mOnChangeEventListener.moveToInitial(new Position(x, y), optionOrginLocation,this);
                 }
                 break;
         }
@@ -118,10 +124,8 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     interface OnChangeEventListener {
-        void moveToFailed(ModulePosition currentPosition, ItemButtonView itemButtonView);
+        void moveToInitial(Position startPosition, ModulePosition endPosition,ItemButtonView itemButtonView);
 
-        void moveToInitial(ItemButtonView itemButtonView);
-
-        void moveToOther(ItemButtonView itemButtonView, ModulePosition check);
+        void moveToHotQueue(Position startPosition, ModulePosition endPosition);
     }
 }
