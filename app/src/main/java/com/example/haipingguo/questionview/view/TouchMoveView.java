@@ -30,6 +30,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     private ItemButtonView itemView;
     private TouchMoveLayout touchMoveLayout;
     private ModulePosition optionOrginLocation;
+    private OnTouchMoveListener mOnTouchMoveListener;
     private List<ModulePosition> mHotList = new ArrayList<>();
     private List<ModulePosition> mOptionList = new ArrayList<>();
     private boolean isMove;
@@ -47,6 +48,10 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     public TouchMoveView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
+    }
+
+    public void setOnTouchMoveListener(OnTouchMoveListener onTouchMoveListener){
+        mOnTouchMoveListener=onTouchMoveListener;
     }
 
     public void setHotList(List<ModulePosition> centerList) {
@@ -138,7 +143,16 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     @Override
     public void moveToInitial(Position startPosition, ModulePosition endPosition, ItemButtonView itemButtonView) {
         AnimaUtils.moveToHotQuestion(new Position(startPosition.x, startPosition.y), endPosition, itemButtonView);
-        TouchMoveLayout.resultMap.remove(itemButtonView.index);
+        Map.Entry<Integer, ItemButtonView> entry1 = null;
+        for (Map.Entry<Integer, ItemButtonView> entry : TouchMoveLayout.resultMap.entrySet()) {
+            if(itemButtonView.equals(entry.getValue())){
+                entry1=entry;
+            }
+        }
+        if(entry1!=null){
+            TouchMoveLayout.resultMap.remove(entry1.getKey());
+        }
+        mOnTouchMoveListener.result(getList(TouchMoveLayout.resultMap));
     }
 
     @Override
@@ -158,13 +172,15 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
                         entry1=entry;
                     }
                 }
-                ModulePosition modulePosition1 = mHotList.get(entry1.getKey());
-                AnimaUtils.moveToHotQuestion(endPosition.centerPosition,
-                        modulePosition1, itemButtonView);
-                TouchMoveLayout.resultMap.remove(endPosition.index);
-                TouchMoveLayout.resultMap.remove(modulePosition1.index);
-                TouchMoveLayout.resultMap.put(endPosition.index, itemView);
-                TouchMoveLayout.resultMap.put(modulePosition1.index, itemButtonView);
+                if(entry1!=null){
+                    ModulePosition modulePosition1 = mHotList.get(entry1.getKey());
+                    AnimaUtils.moveToHotQuestion(endPosition.centerPosition,
+                            modulePosition1, itemButtonView);
+                    TouchMoveLayout.resultMap.remove(endPosition.index);
+                    TouchMoveLayout.resultMap.remove(modulePosition1.index);
+                    TouchMoveLayout.resultMap.put(endPosition.index, itemView);
+                    TouchMoveLayout.resultMap.put(modulePosition1.index, itemButtonView);
+                }
             }
         } else {
             //已经在热区的位置，跳到另一个热区
@@ -178,7 +194,23 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             //从开始位置到热区
             TouchMoveLayout.resultMap.put(endPosition.index, itemView);
         }
+        mOnTouchMoveListener.result(getList(TouchMoveLayout.resultMap));
         AnimaUtils.moveToHotQuestion(new Position(startPosition.x, startPosition.y),
                 endPosition, itemView);
+    }
+
+    private List<Integer> getList(Map<Integer, ItemButtonView> resultMap) {
+        List<Integer> resultList = new ArrayList<>();
+        for (int i = 0; i < mOptionList.size(); i++) {
+            ItemButtonView itemButtonView = resultMap.get(i);
+            if(itemButtonView!=null){
+                resultList.add(itemButtonView.index);
+            }
+        }
+        return resultList;
+    }
+
+    public interface OnTouchMoveListener {
+        void result(List<Integer> resultList);
     }
 }

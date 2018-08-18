@@ -24,13 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TouchMoveLayout extends RelativeLayout  {
+public class TouchMoveLayout extends RelativeLayout implements TouchMoveView.OnTouchMoveListener {
     private Context mContext;
     public static int YOFFSETY = 0;
     public static int YOFFSETX = 0;
+    private OnTouchMoveListener mOnTouchMoveListener;
     int ints[] = new int[2];
     private LinearLayout mQuestionLlyt, mOptionLlyt;
-    private Paint paint;
     //题目热区集合
     private List<ModulePosition> HotQuestionList = new ArrayList<>();
     //选项位置集合
@@ -54,14 +54,15 @@ public class TouchMoveLayout extends RelativeLayout  {
         inflate(context, R.layout.touch_view_layout, this);
     }
 
+    public void setOnTouchMoveListener(OnTouchMoveListener onTouchMoveListener){
+        mOnTouchMoveListener=onTouchMoveListener;
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         mQuestionLlyt = findViewById(R.id.touch_question_llyt);
         mOptionLlyt = findViewById(R.id.touch_option_llyt);
-        paint = new Paint();
-        paint.setStrokeWidth(20);
-        paint.setColor(mContext.getResources().getColor(android.R.color.holo_red_dark));
     }
 
     /**
@@ -117,6 +118,7 @@ public class TouchMoveLayout extends RelativeLayout  {
             touchMoveView.setLayoutParams(layoutParams);
             getOptionView(touchMoveView,i);
             touchMoveView.setIndex(i);
+            touchMoveView.setOnTouchMoveListener(this);
             mOptionLlyt.addView(touchMoveView);
             touchMoveViewList.add(touchMoveView);
         }
@@ -178,22 +180,19 @@ public class TouchMoveLayout extends RelativeLayout  {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        ModulePosition modulePosition = mOptionList.get(1);
-       /* Rect rect = new Rect((int)modulePosition.leftTop.x, (int)modulePosition.leftTop.y,
-                (int)modulePosition.rightBottom.x, (int)modulePosition.rightBottom.y);
-
-       */
-       /*
-        canvas.drawRect(rect,paint);*/
-    }
-
     public void getOptionView(AppCompatTextView textView,int index) {
         textView.setBackgroundResource(R.drawable.live_common_touch_view_background);
         textView.setPadding(ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 7),
                 ScreenUtil.dp2px(mContext, 20), ScreenUtil.dp2px(mContext, 10));
         textView.setText(String.valueOf(index+1));
+    }
+
+    @Override
+    public void result(List<Integer> resultList) {
+        mOnTouchMoveListener.result(resultList);
+    }
+
+    public interface OnTouchMoveListener {
+       void result(List<Integer> resultList);
     }
 }
