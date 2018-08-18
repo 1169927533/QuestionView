@@ -24,7 +24,9 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     private float downY;
     private ItemButtonView itemView;
     private TouchMoveLayout touchMoveLayout;
-    private List<ModulePosition> mCenterList = new ArrayList<>();
+    private ModulePosition optionOrginLocation;
+    private List<ModulePosition> mHotList = new ArrayList<>();
+
     private int index;
 
     public TouchMoveView(Context context) {
@@ -40,9 +42,9 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
         this.mContext = context;
     }
 
-    public void setCenterList(List<ModulePosition> centerList) {
-        mCenterList.clear();
-        mCenterList.addAll(centerList);
+    public void setHotList(List<ModulePosition> centerList) {
+        mHotList.clear();
+        mHotList.addAll(centerList);
     }
 
     public void setParentLayout(TouchMoveLayout parentLayout) {
@@ -59,13 +61,18 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_DOWN:
                 downX = event.getRawX();
                 downY = event.getRawY();
-                if(itemView==null){
+                if (itemView == null) {
                     itemView = getItemButtonView();
                     itemView.initLayout(mContext);
-                    int[] ints=new int[2];
+                    int[] ints = new int[2];
                     getLocationOnScreen(ints);
-                    itemView.setResultPositionList(mCenterList);
-                    itemView.moveTo(new Position(ints[0]-YOFFSETX,ints[1]-YOFFSETY));
+                    itemView.setResultPositionList(mHotList);
+                    optionOrginLocation = new ModulePosition();
+                    optionOrginLocation.setCenterPosition(new Position(ints[0]-YOFFSETX+getWidth()/2,ints[1]-YOFFSETY+getHeight()/2));
+                    optionOrginLocation.setLeftTop(new Position(ints[0]-YOFFSETX, ints[1]-YOFFSETY));
+                    optionOrginLocation.setRightBottom(new Position(ints[0]-YOFFSETX + getWidth(), ints[1]-YOFFSETY + getHeight()));
+                    itemView.setOptionOrginLocation(optionOrginLocation);
+                    itemView.moveTo(optionOrginLocation);
                     touchMoveLayout.addView(itemView);
                     setVisibility(INVISIBLE);
                 }
@@ -73,21 +80,22 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(moveX - downX) > 20 || Math.abs( moveY - downY) > 20) {
-                    itemView.moveTo(new Position(moveX  - YOFFSETX-getWidth()/2,
-                            moveY  - YOFFSETY-getHeight()/2));
+                if (Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20) {
+                    itemView.setX(moveX - YOFFSETX - getWidth() / 2);
+                    itemView.setY(moveY - YOFFSETY - getHeight() / 2);
                 }
-                downX = moveX;
-                downY = moveY;
                 break;
             case MotionEvent.ACTION_UP:
-                float x = event.getRawX()- YOFFSETX;
+                float x = event.getRawX() - YOFFSETX;
                 float y = event.getRawY() - YOFFSETY;
+                if (isShowAnimat(x, y)) {
+                    return false;
+                }
                 ModulePosition check = check(x, y);
                 if (check != null) {
-                    AnimaUtils.moveToOther(new Position(x,y),check,itemView);
+                    AnimaUtils.moveToHotQuestion(new Position(x, y), check, itemView);
                 } else {
-
+                    AnimaUtils.moveToHotQuestion(new Position(x - YOFFSETX, y - YOFFSETY), optionOrginLocation, itemView);
                 }
                 break;
         }
@@ -95,8 +103,8 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     }
 
     private ModulePosition check(float x, float y) {
-        for (int i = 0; i < mCenterList.size(); i++) {
-            ModulePosition position = mCenterList.get(i);
+        for (int i = 0; i < mHotList.size(); i++) {
+            ModulePosition position = mHotList.get(i);
             if (position != null) {
                 if (x > position.leftTop.x && x < position.rightBottom.x && y > position.leftTop.y && y < position.rightBottom.y) {
                     return position;
@@ -122,8 +130,16 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     }
 
     public ItemButtonView getItemButtonView() {
-        ItemButtonView  itemButtonView=new ItemButtonView(mContext);
-        touchMoveLayout.getOptionView(itemButtonView,index);
+        ItemButtonView itemButtonView = new ItemButtonView(mContext);
+        touchMoveLayout.getOptionView(itemButtonView, index);
         return itemButtonView;
+    }
+
+    public boolean isShowAnimat(float x, float y) {
+        if (x > optionOrginLocation.leftTop.x && x < optionOrginLocation.rightBottom.x
+                && y > optionOrginLocation.leftTop.y && y > optionOrginLocation.rightBottom.y) {
+            return true;
+        }
+        return false;
     }
 }

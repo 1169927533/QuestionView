@@ -21,6 +21,7 @@ import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
 public class ItemButtonView extends android.support.v7.widget.AppCompatTextView {
     //答案的位置范围数组
     public List<ModulePosition> resultPositionList = new ArrayList<>();
+    private ModulePosition optionOrginLocation;
     public OnChangeEventListener listener;
     private float downX;
     private float downY;
@@ -35,6 +36,10 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
 
     public ItemButtonView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setOptionOrginLocation(ModulePosition optionOrginLocation) {
+        this.optionOrginLocation = optionOrginLocation;
     }
 
     public void setOnChangeEvent(OnChangeEventListener listener) {
@@ -62,10 +67,10 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     //已处理偏移问题,待处理动画
-    public void moveTo(Position toPosition) {
-        setX(toPosition.x);
-        setY(toPosition.y);
-        Log.i("ghppp","time 2=="+System.currentTimeMillis());
+    public void moveTo(ModulePosition toPosition) {
+        setX(toPosition.leftTop.x);
+        setY(toPosition.leftTop.y);
+        Log.i("ghppp", "time 2==" + System.currentTimeMillis());
     }
 
     @Override
@@ -78,22 +83,19 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(moveX - downX) > 20 || Math.abs( moveY - downX) > 20) {
-                    setX(moveX  - YOFFSETX-getWidth()/2);
-                    setY(moveY  - YOFFSETY-getHeight()/2);
+                if (Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20) {
+                    setX(moveX - YOFFSETX - getWidth() / 2);
+                    setY(moveY - YOFFSETY - getHeight() / 2);
                 }
-                downX = moveX;
-                downY = moveY;
                 break;
             case MotionEvent.ACTION_UP:
-                float x = event.getRawX()- YOFFSETX;
+                float x = event.getRawX() - YOFFSETX;
                 float y = event.getRawY() - YOFFSETY;
                 ModulePosition check = check(x, y);
-                if(check!=null){
-                    AnimaUtils.moveToOther(new Position(x-getWidth()/2,y-getHeight()/2),check,this);
-                    //listener.moveToOther(this, check);
-                }else{
-
+                if (check != null) {
+                    AnimaUtils.moveToHotQuestion(new Position(x - getWidth() / 2, y - getHeight() / 2), check, this);
+                } else {
+                    AnimaUtils.moveToHotQuestion(new Position(x, y),optionOrginLocation, this);
                 }
                 break;
         }
@@ -101,7 +103,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     private ModulePosition check(float x, float y) {
-        ModulePosition position ;
+        ModulePosition position;
         for (int i = 0; i < resultPositionList.size(); i++) {
             position = resultPositionList.get(i);
             if (position != null) {

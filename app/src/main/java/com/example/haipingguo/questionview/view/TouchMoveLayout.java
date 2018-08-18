@@ -25,7 +25,6 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     private Context mContext;
     public static int YOFFSETY = 0;
     public static int YOFFSETX = 0;
-    private ModulePosition modulePosition;
     int ints[] = new int[2];
     private LinearLayout mQuestionLlyt, mOptionLlyt;
     private Paint paint;
@@ -127,7 +126,7 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
             int[] questionLayoutLocation = new int[2];
             //以屏幕为原点questionItem的坐标
             questionItem.getLocationOnScreen(questionLayoutLocation);
-            modulePosition = new ModulePosition(0 + 1,
+            ModulePosition  modulePosition = new ModulePosition(0 + 1,
                     new Position(questionLayoutLocation[0] , questionLayoutLocation[1]-YOFFSETY),
                     new Position(questionLayoutLocation[0] + questionItem.getWidth(),
                             questionLayoutLocation[1] + questionItem.getHeight()-YOFFSETY));
@@ -143,7 +142,7 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
         }
 
         for (TouchMoveView touchMoveView : touchMoveViewList) {
-            touchMoveView.setCenterList(HotQuestionList);
+            touchMoveView.setHotList(HotQuestionList);
         }
     }
 
@@ -151,11 +150,11 @@ public class TouchMoveLayout extends RelativeLayout implements ViewTreeObserver.
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         ModulePosition modulePosition = HotQuestionList.get(1);
-        Rect rect = new Rect((int)modulePosition.leftTop.x, (int)modulePosition.leftTop.y,
+       /* Rect rect = new Rect((int)modulePosition.leftTop.x, (int)modulePosition.leftTop.y,
                 (int)modulePosition.rightBottom.x, (int)modulePosition.rightBottom.y);
 
-       /* canvas.drawPoint(ints[0],ints[1],paint);*/
-        canvas.drawRect(rect,paint);
+       */ canvas.drawPoint(modulePosition.centerPosition.x,modulePosition.centerPosition.y,paint);/*
+        canvas.drawRect(rect,paint);*/
     }
 
     public void getOptionView(AppCompatTextView textView,int index) {

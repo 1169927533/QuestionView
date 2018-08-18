@@ -16,4 +16,35 @@ public class ModulePosition {
         this.leftTop = leftTop;
         this.rightBottom = rightBottom;
     }
+
+    public ModulePosition() {
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public Position getLeftTop() {
+        return leftTop;
+    }
+
+    public void setLeftTop(Position leftTop) {
+        this.leftTop = leftTop;
+    }
+
+    public Position getRightBottom() {
+        return rightBottom;
+    }
+
+    public void setRightBottom(Position rightBottom) {
+        this.rightBottom = rightBottom;
+    }
+
+    public Position getCenterPosition() {
+        return centerPosition;
+    }
 }
