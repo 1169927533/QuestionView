@@ -26,6 +26,7 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
     private TouchMoveLayout touchMoveLayout;
     private ModulePosition optionOrginLocation;
     private List<ModulePosition> mHotList = new ArrayList<>();
+    private boolean isMove;
 
     private int index;
 
@@ -80,7 +81,8 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20) {
+                isMove=Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20;
+                if (isMove) {
                     itemView.setX(moveX - YOFFSETX - getWidth() / 2);
                     itemView.setY(moveY - YOFFSETY - getHeight() / 2);
                 }
@@ -88,14 +90,14 @@ public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
             case MotionEvent.ACTION_UP:
                 float x = event.getRawX() - YOFFSETX;
                 float y = event.getRawY() - YOFFSETY;
-                if (isShowAnimat(x, y)) {
+                if (!isMove) {
                     return false;
                 }
                 ModulePosition check = check(x, y);
                 if (check != null) {
                     AnimaUtils.moveToHotQuestion(new Position(x, y), check, itemView);
                 } else {
-                    AnimaUtils.moveToHotQuestion(new Position(x - YOFFSETX, y - YOFFSETY), optionOrginLocation, itemView);
+                    AnimaUtils.moveToHotQuestion(new Position(x , y), optionOrginLocation, itemView);
                 }
                 break;
         }

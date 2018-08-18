@@ -19,10 +19,10 @@ import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETX;
 import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
 
 public class ItemButtonView extends android.support.v7.widget.AppCompatTextView {
-    //答案的位置范围数组
     public List<ModulePosition> resultPositionList = new ArrayList<>();
     private ModulePosition optionOrginLocation;
     public OnChangeEventListener listener;
+    private boolean isMove;
     private float downX;
     private float downY;
 
@@ -66,11 +66,9 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
         });
     }
 
-    //已处理偏移问题,待处理动画
     public void moveTo(ModulePosition toPosition) {
         setX(toPosition.leftTop.x);
         setY(toPosition.leftTop.y);
-        Log.i("ghppp", "time 2==" + System.currentTimeMillis());
     }
 
     @Override
@@ -83,7 +81,8 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getRawX();
                 float moveY = event.getRawY();
-                if (Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20) {
+                isMove = Math.abs(moveX - downX) > 20 || Math.abs(moveY - downY) > 20;
+                if (isMove) {
                     setX(moveX - YOFFSETX - getWidth() / 2);
                     setY(moveY - YOFFSETY - getHeight() / 2);
                 }
@@ -91,11 +90,14 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
             case MotionEvent.ACTION_UP:
                 float x = event.getRawX() - YOFFSETX;
                 float y = event.getRawY() - YOFFSETY;
+                if (!isMove) {
+                    return false;
+                }
                 ModulePosition check = check(x, y);
                 if (check != null) {
                     AnimaUtils.moveToHotQuestion(new Position(x - getWidth() / 2, y - getHeight() / 2), check, this);
                 } else {
-                    AnimaUtils.moveToHotQuestion(new Position(x, y),optionOrginLocation, this);
+                    AnimaUtils.moveToHotQuestion(new Position(x, y), optionOrginLocation, this);
                 }
                 break;
         }
