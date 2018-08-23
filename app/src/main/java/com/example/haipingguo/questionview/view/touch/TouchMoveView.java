@@ -1,26 +1,19 @@
-package com.example.haipingguo.questionview.view;
+package com.example.haipingguo.questionview.view.touch;
 
 import android.content.Context;
-import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 
 import com.example.haipingguo.questionview.utils.AnimaUtils;
-import com.example.haipingguo.questionview.view.bean.ModulePosition;
-import com.example.haipingguo.questionview.view.bean.Position;
+import com.example.haipingguo.questionview.view.touch.bean.ModulePosition;
+import com.example.haipingguo.questionview.view.touch.bean.Position;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETX;
-import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
+import static com.example.haipingguo.questionview.view.touch.TouchMoveLayout.YOFFSETX;
+import static com.example.haipingguo.questionview.view.touch.TouchMoveLayout.YOFFSETY;
 
 public class TouchMoveView extends android.support.v7.widget.AppCompatTextView
         implements ItemButtonView.OnChangeEventListener {

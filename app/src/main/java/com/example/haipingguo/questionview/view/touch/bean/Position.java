@@ -1,4 +1,4 @@
-package com.example.haipingguo.questionview.view.bean;
+package com.example.haipingguo.questionview.view.touch.bean;
 
 public class Position {
     public float x;

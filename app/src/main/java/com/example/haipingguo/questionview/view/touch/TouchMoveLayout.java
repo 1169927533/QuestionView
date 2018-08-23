@@ -1,14 +1,10 @@
-package com.example.haipingguo.questionview.view;
+package com.example.haipingguo.questionview.view.touch;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -16,8 +12,8 @@ import android.widget.RelativeLayout;
 
 import com.example.haipingguo.questionview.R;
 import com.example.haipingguo.questionview.utils.ScreenUtil;
-import com.example.haipingguo.questionview.view.bean.ModulePosition;
-import com.example.haipingguo.questionview.view.bean.Position;
+import com.example.haipingguo.questionview.view.touch.bean.ModulePosition;
+import com.example.haipingguo.questionview.view.touch.bean.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;

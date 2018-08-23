@@ -1,22 +1,20 @@
-package com.example.haipingguo.questionview.view;
+package com.example.haipingguo.questionview.view.touch;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 
 import com.example.haipingguo.questionview.R;
-import com.example.haipingguo.questionview.utils.AnimaUtils;
 import com.example.haipingguo.questionview.utils.ScreenUtil;
-import com.example.haipingguo.questionview.view.bean.ModulePosition;
-import com.example.haipingguo.questionview.view.bean.Position;
+import com.example.haipingguo.questionview.view.touch.bean.ModulePosition;
+import com.example.haipingguo.questionview.view.touch.bean.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETX;
-import static com.example.haipingguo.questionview.view.TouchMoveLayout.YOFFSETY;
+import static com.example.haipingguo.questionview.view.touch.TouchMoveLayout.YOFFSETX;
+import static com.example.haipingguo.questionview.view.touch.TouchMoveLayout.YOFFSETY;
 
 public class ItemButtonView extends android.support.v7.widget.AppCompatTextView {
     public List<ModulePosition> resultPositionList = new ArrayList<>();
@@ -124,7 +122,7 @@ public class ItemButtonView extends android.support.v7.widget.AppCompatTextView 
     }
 
     interface OnChangeEventListener {
-        void moveToInitial(Position startPosition, ModulePosition endPosition,ItemButtonView itemButtonView);
+        void moveToInitial(Position startPosition, ModulePosition endPosition, ItemButtonView itemButtonView);
 
         void moveToHotQueue(Position startPosition, ModulePosition endPosition);
     }
