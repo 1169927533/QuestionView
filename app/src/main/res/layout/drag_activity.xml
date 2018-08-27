@@ -16,7 +16,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="a" />
+            android:text="1" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="b" />
+            android:text="2" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="c" />
+            android:text="3" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +40,14 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="a" />
+            android:text="4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/inclass_spell_word_bg"
+            android:padding="20dp"
+            android:text="5" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +55,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="b" />
+            android:text="6" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,13 +63,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="c" /> <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/inclass_spell_word_bg"
-        android:padding="20dp"
-        android:text="a" />
+            android:text="7" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,14 +71,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/inclass_spell_word_bg"
             android:padding="20dp"
-            android:text="b" />
+            android:text="8" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/inclass_spell_word_bg"
-            android:padding="20dp"
-            android:text="c" />
     </com.example.haipingguo.questionview.view.drag.AutoChangLineLayout>
 </RelativeLayout>
