@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="live_common_gray_1">#333333</color>
+
+    <!--拖拽题-->
+    <color name="live_common_sentence_test_word">#333333</color>
+    <color name="live_common_spell_divide">#d2d2d2</color>
+    <color name="live_common_spell_tip_right">#4cc760</color>
+    <color name="live_common_spell_tip_wrong">#ff710d</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#0e5ba3</color>
 </resources>

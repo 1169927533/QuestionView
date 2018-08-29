@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AutoBreakLayout">
+        <attr name="autoBreakLayout_maxLine"  format="reference|integer"/>
+        <attr name="autoBreakLayout_horizontal_space" format="dimension|reference"/>
+        <attr name="autoBreakLayout_vertical_space"  format="dimension|reference"/>
+        <attr name="autoBreakLayout_item_layout" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="DragLayout">
+        <attr name="dragLayout_item_layout" format="reference"/>
+    </declare-styleable>
+</resources>

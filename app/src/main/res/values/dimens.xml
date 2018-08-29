@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="live_title_bar_height">48dp</dimen>
+    <!--连线题-->
+    <dimen name="applock_pattern_password_press_line">3dp</dimen>
+    <dimen name="llyt_preview_line_answer_margin_top">25dp</dimen>
+    <dimen name="preview_question_picture_padding_left_or_right">10dp</dimen>
+    <dimen name="preview_question_circle_margin_top">-6.5dp</dimen>
+    <dimen name="preview_question_circle_width">13dp</dimen>
+    <dimen name="preview_question_circle_height">13dp</dimen>
+    <dimen name="preview_answer_title_margin_top_circle">6.5dp</dimen>
+    <dimen name="preview_question_base_point_size">15dp</dimen>
+    <dimen name="preview_question_lesson_point_size">10dp</dimen>
+    <dimen name="preview_question_lesson_icon_width">160dp</dimen>
+    <dimen name="preview_question_lesson_icon_height">120dp</dimen>
+
+    <!---->
+    <dimen name="touch_view_lesson_icon_width">160dp</dimen>
+    <dimen name="touch_view_question_lesson_icon_height">120dp</dimen>
+
+
+    <!--拖拽元素之间的间隔-->
+    <dimen name="spell_space">9.5dp</dimen>
+    <!--中间分割线的高度-->
+    <dimen name="spell_divide">2dp</dimen>
+    <!--中间分割线上下两部分的间隔-->
+    <dimen name="spell_divide_margin">14.5dp</dimen>
+    <!--单词TextView的panding和字体大小-->
+    <dimen name="spell_test_word_padding_vertical">7dp</dimen>
+    <dimen name="spell_test_word_padding_bottom">10dp</dimen>
+    <dimen name="spell_test_word_padding_horizontal">20dp</dimen>
+    <dimen name="sentence_spell_test_word_text">16dp</dimen>
+    <dimen name="word_spell_test_word_text">16dp</dimen>
+    <dimen name="line_question_text">16dp</dimen>
+
+    <!--中文提示的字体大小-->
+    <dimen name="test_data_text">24sp</dimen>
+
+    <!--拼句子拖拽部分-->
+    <dimen name="sentence_spell_margin_top">75dp</dimen>
+    <dimen name="sentence_spell_test_height">208dp</dimen>
+    <dimen name="content_margin_left">30dp</dimen>
+    <dimen name="sentence_spell_result_margin_top">22dp</dimen>
+
+    <!--拼单词拖拽部分-->
+    <dimen name="word_spell_test_height">230dp</dimen>
+    <dimen name="word_spell_test_content_left_margin">210dp</dimen>
+    <dimen name="word_spell_result_margin_top">50dp</dimen>
+    <dimen name="word_spell_result_min_height">30dp</dimen>
+    <dimen name="sentence_spell_result_min_height">40dp</dimen>
+
+    <!--拼单词icon-->
+    <dimen name="word_spell_test_icon_width">160dp</dimen>
+    <dimen name="word_spell_test_icon_height">120dp</dimen>
+    <dimen name="word_spell_test_icon_padding">4dp</dimen>
+    <dimen name="word_spell_test_icon_radius">10dp</dimen>
+    <dimen name="word_spell_test_icon_margin_left">30dp</dimen>
+
+    <!--结果提示-->
+    <dimen name="result_tip_text">16sp</dimen>
+    <dimen name="spell_tip_bg_radius">5dp</dimen>
+    <dimen name="spell_tip_height">33dp</dimen>
+    <dimen name="spell_tip_text_margin">16dp</dimen>
+    <dimen name="spell_tip_text_padding">9dp</dimen>
+
+
+    <!--课后布局-->
+
+    <!--中间分割线的高度-->
+    <dimen name="spell_divide2">3dp</dimen>
+    <dimen name="live_common_shell_icon_bg_width">160dp</dimen>
+    <dimen name="live_common_shell_icon_bg_height">120dp</dimen>
+    <dimen name="live_common_shell_icon_width">155dp</dimen>
+    <dimen name="live_common_shell_icon_height">115dp</dimen>
+    <dimen name="live_common_shell_layout_width">148dp</dimen>
+    <dimen name="live_common_shell_layout_height">88dp</dimen>
+    <dimen name="word_spell_test_icon_padding2">3dp</dimen>
+    <dimen name="spell_tip_text_margin2">40dp</dimen>
+
+    <dimen name="content_margin_right">30dp</dimen>
+
+    <dimen name="lineQuestion_content_height">178dp</dimen>
+
+    <dimen name="live_common_exercise_content_top_margin">60dp</dimen>
+    <dimen name="live_common_spell_tip_margin">60dp</dimen>
+
+    <!-- 截屏-->
+    <integer name="live_screen_shot_delayed_image">400</integer>
+    <integer name="live_screen_shot_delayed_screen">200</integer>
+    <integer name="live_live_play_shot_delay">600</integer>
+
+    <integer name="live_screen_copy_white_dismiss_delay">100</integer>
+
+    <!--表情-->
+    <dimen name="common_emotion_item_view_height">52dip</dimen>
+    <dimen name="common_emotion_item_view_padding">12dip</dimen>
+    <dimen name="common_emotion_height">16dp</dimen>
+    <dimen name="common_emotion_layout_height">250dip</dimen>
+
+    <!--标签按钮-->
+    <dimen name="live_lesson_label_btn_width">60dp</dimen>
+    <dimen name="live_lesson_label_btn_height">25dp</dimen>
+    <dimen name="btn_loading_size">24dp</dimen>
+
+    <dimen name="spell_divide_answer_margin">14.5dp</dimen>
+    <dimen name="drag_pic_answer_margin">0dp</dimen>
+    <dimen name="live_common_spell_word_padding_left">20dp</dimen>
+    <dimen name="live_common_spell_word_padding_right">20dp</dimen>
+</resources>

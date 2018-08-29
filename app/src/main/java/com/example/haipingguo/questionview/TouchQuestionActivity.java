@@ -3,9 +3,8 @@ package com.example.haipingguo.questionview;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.haipingguo.questionview.view.TouchMoveLayout;
+import com.example.haipingguo.questionview.view.touch.TouchMoveLayout;
 
 import java.util.ArrayList;
 import java.util.List;

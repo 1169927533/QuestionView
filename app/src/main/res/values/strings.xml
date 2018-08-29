@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">QuestionView</string>
+    <string name="spell_test_view_no_item_layout_error">使用时必须配置内容元素的布局资源</string>
+    <string name="spell_test_result_correct_tip">答对了！棒棒哒～</string>
+    <string name="spell_test_result_wrrong_tip">正确答案:&#x0020;</string>
+    <string name="common_loading_text">加载中...</string>
+    <string name="common_net_error_text">网络异常</string>
+
 </resources>

@@ -43,6 +43,7 @@ public class AutoChangLineLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int totalWidth = 0;
         int totalHeight = 0;
+        int aHeight = 0, aWidth = 0;
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
@@ -55,16 +56,18 @@ public class AutoChangLineLayout extends ViewGroup {
             int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             //换行
             if (totalWidth + childWidth > sizeWidth) {
-                totalHeight += childHeight;
-                totalWidth = Math.max(totalWidth, sizeWidth);
-                break;
-            } else {
-                totalWidth += childWidth;
-                totalHeight = Math.max(totalHeight, childHeight);
+                aHeight += totalHeight;
+                aWidth = Math.max(totalWidth, sizeWidth);
+                totalWidth = 0;
+                totalHeight = 0;
             }
+            totalWidth += childWidth;
+            totalHeight = Math.max(totalHeight, childHeight);
         }
-        int width = modeWidth == MeasureSpec.AT_MOST ? totalWidth : sizeWidth;
-        int height = modeHeight == MeasureSpec.AT_MOST ? totalHeight : sizeHeight;
+        aHeight+=totalHeight;
+        aWidth=Math.max(aWidth,totalWidth);
+        int width = modeWidth == MeasureSpec.AT_MOST ? aWidth : sizeWidth;
+        int height = modeHeight == MeasureSpec.AT_MOST ? aHeight: sizeHeight;
         setMeasuredDimension(width, height);
     }
 
@@ -76,9 +79,9 @@ public class AutoChangLineLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int totalWidth = 0;
         int totalHeight = 0;
-        int width = getWidth();
-
-        int left = 0, top = 0, right = 0, rightMargin = 0;
+        int width = getMeasuredWidth();
+        int aHeight = 0;
+        int left = 0, top = 0, right = 0;
         List<View> lineListView = new ArrayList<>();
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
@@ -87,21 +90,23 @@ public class AutoChangLineLayout extends ViewGroup {
             int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             //换行
             if (totalWidth + childWidth > width) {
-                totalHeight += childHeight;
-                lineHeightList.add(totalHeight);
+                aHeight += totalHeight;
+                lineHeightList.add(aHeight);
                 listView.add(lineListView);
-                lineListView.clear();
+                lineListView = new ArrayList<>();
                 totalWidth = 0;
                 totalHeight = 0;
             } else {
-                lineListView.add(child);
-                totalWidth += childWidth;
                 totalHeight = Math.max(totalHeight, childHeight);
             }
+            totalWidth += childWidth;
+            lineListView.add(child);
         }
         listView.add(lineListView);
         for (int i = 0; i < listView.size(); i++) {
             List<View> views = listView.get(i);
+            left = 0;
+            right = 0;
             for (int j = 0; j < views.size(); j++) {
                 View childView = views.get(j);
                 MarginLayoutParams lp = (MarginLayoutParams) childView.getLayoutParams();
@@ -111,12 +116,6 @@ public class AutoChangLineLayout extends ViewGroup {
                 right = left + childView.getMeasuredWidth();
                 childView.layout(left, top, right,
                         top + childView.getMeasuredHeight());
-                if (i == 1) {
-                    Log.i("ghpppp", "left==" + left);
-                    Log.i("ghpppp", "top==" + top);
-                    Log.i("ghpppp", "right==" + right);
-                    Log.i("ghpppp", "top + childView.getMeasuredHeight()==" + (top + childView.getMeasuredHeight()));
-                }
             }
         }
     }

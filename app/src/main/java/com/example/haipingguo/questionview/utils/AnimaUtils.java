@@ -3,14 +3,13 @@ package com.example.haipingguo.questionview.utils;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-
-import com.example.haipingguo.questionview.view.ItemButtonView;
-import com.example.haipingguo.questionview.view.bean.ModulePosition;
-import com.example.haipingguo.questionview.view.bean.Position;
+import com.example.haipingguo.questionview.view.touch.ItemButtonView;
+import com.example.haipingguo.questionview.view.touch.bean.ModulePosition;
+import com.example.haipingguo.questionview.view.touch.bean.Position;
 
 public class AnimaUtils {
 
-    public static void moveToHotQuestion(Position startPosition,ModulePosition endPosition, final ItemButtonView itemView){
+    public static void moveToHotQuestion(Position startPosition, ModulePosition endPosition, final ItemButtonView itemView){
         final Position position1=endPosition.centerPosition;
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(itemView, "translationX", startPosition.x, position1.x-itemView.getWidth()/2);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(itemView, "translationY", startPosition.y, position1.y-itemView.getHeight()/2);

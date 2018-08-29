@@ -5,7 +5,7 @@
     android:clipChildren="false"
     android:gravity="center">
 
-    <com.example.haipingguo.questionview.view.TouchMoveLayout
+    <com.example.haipingguo.questionview.view.touch.TouchMoveLayout
         android:id="@+id/toucheMoveLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

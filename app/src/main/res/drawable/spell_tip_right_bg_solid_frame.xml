@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/live_common_spell_tip_right" />
+    <corners
+        android:bottomLeftRadius="@dimen/spell_tip_bg_radius"
+        android:topLeftRadius="@dimen/spell_tip_bg_radius" />
+</shape>
